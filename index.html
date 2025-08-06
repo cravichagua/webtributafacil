@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="images/logo.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tributa Fácil - Asesoría Contable Futurista</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <div class="container header-content">
+            <div class="logo-container">
+                <img src="images/logo.png" alt="Logo de Tributa Fácil" class="logo">
+                <h1>Tributa Fácil</h1>
+            </div>
+            <p>Innovación y Precisión en Asesoría Contable</p>
+        </div>
+        <div class="header-shape"></div>
+    </header>
+
+    <section id="servicios">
+        <div class="container">
+            <h2>Nuestros Servicios Digitales</h2>
+            <div class="servicios-grid">
+                <div class="servicio">
+                    <h3><span class="icon">📊</span> Contabilidad Inteligente</h3>
+                    <p>Soluciones contables ágiles y precisas, adaptadas a la era digital para optimizar la gestión de tu negocio.</p>
+                </div>
+                <div class="servicio">
+                    <h3><span class="icon">💡</span> Asesoría Fiscal Estratégica</h3>
+                    <p>Maximizamos tus beneficios fiscales a través de una planificación proactiva y un profundo conocimiento de la normativa vigente.</p>
+                </div>
+                <div class="servicio">
+                    <h3><span class="icon">📈</span> Análisis Financiero Avanzado</h3>
+                    <p>Te proporcionamos informes interactivos y claros que convierten datos complejos en decisiones estratégicas y rentables.</p>
+                </div>
+                <div class="servicio">
+                    <h3><span class="icon">🚀</span> Enfoque en tu Crecimiento</h3>
+                    <p>Liberamos tu tiempo al automatizar la contabilidad, permitiéndote concentrarte en la expansión y el éxito de tu empresa.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="contacto">
+        <div class="container">
+            <h2>Contacta con un Experto</h2>
+            <p>Da el siguiente paso hacia la tranquilidad financiera. Completa el formulario y nos pondremos en contacto contigo.</p>
+            
+            <form id="miFormulario">
+                <div class="form-grid">
+                    <input type="text" id="nombre" name="nombre" placeholder="Nombre" required>
+                    <input type="text" id="apellido" name="apellido" placeholder="Apellido" required>
+                    <input type="tel" id="numeroCelular" name="numeroCelular" placeholder="Número de Celular" required>
+                    <input type="email" id="correoElectronico" name="correoElectronico" placeholder="Correo Electrónico" required>
+                </div>
+                <input type="text" id="nombreEmpresa" name="nombreEmpresa" placeholder="Nombre de la Empresa (Opcional)">
+                <textarea id="mensaje" name="mensaje" rows="5" placeholder="¿Cómo podemos ayudarte?" required></textarea>
+                <button type="submit">Enviar Mensaje</button>
+                <div id="form-message"></div>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Tributa Fácil. Todos los derechos reservados.</p>
+            <div class="contacto-info">
+                <p>📞 961 557 424</p>
+                <p>✉️ contacto@tributafacil.online</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+      document.getElementById("miFormulario").addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const boton = e.target.querySelector("button");
+        const mensajeDiv = document.getElementById("form-message");
+
+        boton.disabled = true;
+        boton.textContent = "Enviando...";
+        mensajeDiv.textContent = "";
+        mensajeDiv.className = "";
+
+        try {
+          const formData = new FormData(e.target);
+          const response = await fetch("/enviar", {
+            method: "POST",
+            body: formData,
+          });
+
+          const textoRespuesta = await response.text();
+
+          if (response.ok) {
+            mensajeDiv.textContent = "¡Mensaje enviado con éxito! ✅ Gracias por contactarnos.";
+            mensajeDiv.classList.add("success");
+            e.target.reset();
+          } else {
+            mensajeDiv.textContent = `Error: ${textoRespuesta}`;
+            mensajeDiv.classList.add("error");
+          }
+        } catch (error) {
+          mensajeDiv.textContent = "Error de red. Por favor, intenta de nuevo.";
+          mensajeDiv.classList.add("error");
+        } finally {
+          boton.disabled = false;
+          boton.textContent = "Enviar Mensaje";
+        }
+      });
+    </script>
+</body>
+</html>
